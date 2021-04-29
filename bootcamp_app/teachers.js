@@ -8,6 +8,16 @@ const pool = new Pool({
 });
 
 
+const queryString = `
+  SELECT teachers.id as teacher_id, teachers.name as name, cohorts.name as cohort
+  FROM teachers
+  JOIN cohorts ON cohorts.id = cohort_id
+  WHERE cohorts.name LIKE $1
+  LIMIT $2;
+  `;
+
+const values = [`${process.argv[2]}%`, process.argv[3] || 5];
+
 pool.query(`
 SELECT teachers.name as teacher, cohorts.name as cohort
 FROM teachers
